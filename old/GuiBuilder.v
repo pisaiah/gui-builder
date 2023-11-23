@@ -8,35 +8,36 @@ import math
 import gx
 
 const (
-	version	  = '0.1'
+	version      = '0.1'
 	title_height = 21
-	pos_inc	  = 10
+	pos_inc      = 10
 )
 
 struct Frame {
 	ui.Component_A
 mut:
-	win	  &ui.Window
-	bg	   ui.Image
-    bar     ui.Menubar
+	win      &ui.Window
+	bg       ui.Image
+	bar      ui.Menubar
 	children []ui.Component
 }
 
 fn (mut this Frame) draw() {
-
-    bord := gx.rgb(195,195,195)
-    this.win.draw_bordered_rect(this.x, this.y, this.width, this.height, 2, gx.rgb(246,245,244), bord)
-    this.win.draw_bordered_rect(this.x+1, this.y+1, this.width-2, title_height-1, 2, gx.white, gx.white)
-    ui.draw_with_offset(mut this.bg, (this.x + this.width) - this.bg.width, this.y)
+	bord := gx.rgb(195, 195, 195)
+	this.win.draw_bordered_rect(this.x, this.y, this.width, this.height, 2, gx.rgb(246,
+		245, 244), bord)
+	this.win.draw_bordered_rect(this.x + 1, this.y + 1, this.width - 2, title_height - 1,
+		2, gx.white, gx.white)
+	ui.draw_with_offset(mut this.bg, (this.x + this.width) - this.bg.width, this.y)
 
 	for mut kid in this.children {
-        kid.draw_event_fn(mut this.win, &kid)
-        if mut kid is ui.Menubar {
-            kid.width = this.width - 2
-            kid.height = 25
-            ui.draw_with_offset(mut kid, this.x+1, this.y + title_height)
-            continue
-        }
+		kid.draw_event_fn(mut this.win, &kid)
+		if mut kid is ui.Menubar {
+			kid.width = this.width - 2
+			kid.height = 25
+			ui.draw_with_offset(mut kid, this.x + 1, this.y + title_height)
+			continue
+		}
 		ui.draw_with_offset(mut kid, this.x, this.y + title_height)
 	}
 }
@@ -52,7 +53,7 @@ fn main() {
 	mut abut := ui.menuitem('About GUI Builder')
 	abut.set_click(about_click)
 
-    set_bars(mut win)
+	set_bars(mut win)
 
 	help.add_child(about) // Add About item to Help menu
 	help.add_child(abut)
@@ -60,13 +61,13 @@ fn main() {
 
 	imgf := $embed_file('test.png')
 	mut img := ui.image_from_byte_array_with_size(mut win, imgf.to_bytes(), 98, 22)
-    img.pack()
+	img.pack()
 
 	mut frame := &Frame{
 		win: mut win
 		bg: img
-        width: 500
-        height: 350
+		width: 500
+		height: 350
 	}
 	frame.win = win
 	frame.set_pos(40, 40)
@@ -76,18 +77,18 @@ fn main() {
 	frame.z_index = 2
 
 	clear_old(mut win, false)
-    
-    mut logoim := win.gg.create_image(os.resource_abs_path('logo.png'))
+
+	mut logoim := win.gg.create_image(os.resource_abs_path('logo.png'))
 	mut logo := ui.image(win, logoim)
 	logo.set_bounds(22, 24, 456, 65)
 	logo.pack()
-    logo.draw_event_fn = fn (mut win ui.Window, com &ui.Component) {
-        mut this := *com
-        size := gg.window_size()
-        this.x = 0//size.width - this.width
-        this.y = size.height - this.height
-    }
-    win.add_child(logo)
+	logo.draw_event_fn = fn (mut win ui.Window, com &ui.Component) {
+		mut this := *com
+		size := gg.window_size()
+		this.x = 0 // size.width - this.width
+		this.y = size.height - this.height
+	}
+	win.add_child(logo)
 
 	win.gg.run()
 }
@@ -115,15 +116,15 @@ fn win_draw(mut win ui.Window, com &ui.Component) {
 	if mut this is Frame {
 		mut found := false
 		for mut kid in this.children {
-            if mut kid is ui.Menubar {
-                kid.width = this.width - 2
-                kid.height = 25
-            }
+			if mut kid is ui.Menubar {
+				kid.width = this.width - 2
+				kid.height = 25
+			}
 			if this.is_mouse_down {
 				if ui.point_in(mut kid, win.click_x - this.x, win.click_y - (this.y + title_height)) {
 					kid.is_mouse_down = true
 					this.is_mouse_down = false
-                    
+
 					found = true
 				} else {
 					kid.is_mouse_down = false
@@ -180,7 +181,7 @@ fn clear_old(mut win ui.Window, clear bool) {
 	nb.set_bounds(470, 32, 200 - 5, 30)
 	nb.draw_event_fn = draw_ev
 	nb.set_click(nb_click)
-    nb.z_index = 1
+	nb.z_index = 1
 	win.add_child(nb)
 
 	mut details := ui.label(win, 'Details:')
@@ -192,10 +193,9 @@ fn clear_old(mut win ui.Window, clear bool) {
 
 fn draw_details(mut win ui.Window, com &ui.Component) {
 	size := gg.window_size()
-	win.draw_bordered_rect(com.x - 5, 0, size.width - com.x + 5, size.height,
-						1, win.theme.textbox_background, win.theme.textbox_border)
+	win.draw_bordered_rect(com.x - 5, 0, size.width - com.x + 5, size.height, 1, win.theme.textbox_background,
+		win.theme.textbox_border)
 	draw_ev(mut win, com)
-
 }
 
 fn get_frame(mut win ui.Window) &Frame {
@@ -223,8 +223,8 @@ fn load_details(mut win ui.Window, com &ui.Component) {
 		if mut details is ui.Label {
 			if details.text.starts_with('Details:') {
 				mut btn := *com
-                is_bar := btn is ui.Menubar
-                
+				is_bar := btn is ui.Menubar
+
 				details.text = 'Details:'
 				details.draw_event_fn = fn (mut win ui.Window, com &ui.Component) {
 					mut this := *com
@@ -234,13 +234,13 @@ fn load_details(mut win ui.Window, com &ui.Component) {
 					for mut comm in win.components {
 						if mut comm is Store {
 							btn := comm.com
-                            is_bar := btn is ui.Menubar
-                            if is_bar {
-                                this.text = 'Details:\n'
-                            } else {
-                                this.text = 'Details:\n' + 'x: ' + btn.x.str() + '\ny: ' +
-                                    btn.y.str() + '\n\nText:'
-                            }
+							is_bar := btn is ui.Menubar
+							if is_bar {
+								this.text = 'Details:\n'
+							} else {
+								this.text = 'Details:\n' + 'x: ' + btn.x.str() + '\ny: ' +
+									btn.y.str() + '\n\nText:'
+							}
 						}
 					}
 
@@ -270,12 +270,12 @@ fn load_details(mut win ui.Window, com &ui.Component) {
 					win.add_child(store)
 				}
 
-                if !is_bar {
-                    mut txtb := ui.textbox(win, btn.text)
-                    txtb.set_bounds(100, 150, 70, 20)
-                    txtb.draw_event_fn = draw_ev_2
-                    win.add_child(txtb)
-                }
+				if !is_bar {
+					mut txtb := ui.textbox(win, btn.text)
+					txtb.set_bounds(100, 150, 70, 20)
+					txtb.draw_event_fn = draw_ev_2
+					win.add_child(txtb)
+				}
 
 				make_text_input(mut win, 100, 180, 'Event Fn: Draw', '')
 				make_text_input(mut win, 100, 230, 'Event Fn: After Draw', '')
@@ -286,14 +286,14 @@ fn load_details(mut win ui.Window, com &ui.Component) {
 
 fn make_text_input(mut win ui.Window, x int, y int, label string, text string) {
 	mut clbl := ui.label(win, label)
-	clbl.set_pos(x,y)
+	clbl.set_pos(x, y)
 	clbl.draw_event_fn = draw_ev
 	clbl.pack()
-			
+
 	mut txtc := ui.textbox(win, text)
 	txtc.set_bounds(x, y + 20, 70, 20)
 	txtc.draw_event_fn = draw_ev
-	
+
 	win.add_child(clbl)
 	win.add_child(txtc)
 }

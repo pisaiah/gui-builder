@@ -4,21 +4,21 @@ import iui as ui
 import math
 
 fn set_bars(mut win ui.Window) {
-    mut bar := win.bar
-    mut item := ui.menuitem('New')
-    
-    arr := ['Label', 'Button', 'Textbox', 'Selector', 'Tree', 'Checkbox', 'Menubar']
-    for el in arr {
-        mut itemb := ui.menuitem('ui.' + el)
-        itemb.set_click(nm_click)
-        item.add_child(itemb)
-    }
-    bar.add_child(item)
+	mut bar := win.bar
+	mut item := ui.menuitem('New')
+
+	arr := ['Label', 'Button', 'Textbox', 'Selector', 'Tree', 'Checkbox', 'Menubar']
+	for el in arr {
+		mut itemb := ui.menuitem('ui.' + el)
+		itemb.set_click(nm_click)
+		item.add_child(itemb)
+	}
+	bar.add_child(item)
 }
 
 fn nm_click(mut win ui.Window, item ui.MenuItem) {
-    win.extra_map['sel-type'] = item.text
-    create_new_com(mut win)
+	win.extra_map['sel-type'] = item.text
+	create_new_com(mut win)
 }
 
 fn nb_click(mut win ui.Window, this ui.Button) {
@@ -45,7 +45,6 @@ fn nb_click(mut win ui.Window, this ui.Button) {
 
 	win.add_child(mod)
 }
-
 
 fn create_new_com(mut win ui.Window) {
 	mut frame := get_frame(mut win)
@@ -86,14 +85,12 @@ fn create_new_com(mut win ui.Window) {
 
 		frame.children << btn
 	} else if typ == 'ui.Menubar' {
+		mut bar := ui.menubar(win, win.theme)
+		bar.draw_event_fn = com_draw_event
+		load_details(mut win, bar)
 
-        mut bar := ui.menubar(win, win.theme)
-        bar.draw_event_fn = com_draw_event
-        load_details(mut win, bar)
-
-        frame.bar = bar
-        frame.children << bar
-
+		frame.bar = bar
+		frame.children << bar
 	} else if typ == 'ui.Checkbox' {
 		mut btn := ui.checkbox(win, 'Checkmate!')
 		btn.set_pos(20, 20)
@@ -108,23 +105,24 @@ fn com_draw_event(mut win ui.Window, com &ui.Component) {
 	if com.is_mouse_rele {
 		clear_old(mut win, true)
 		load_details(mut win, com)
-        if mut com is ui.Menubar {
-            com.is_mouse_rele = false
-        }
-    }
+		if mut com is ui.Menubar {
+			com.is_mouse_rele = false
+		}
+	}
 
 	if com.is_mouse_down {
 		mut this := *com
 		mut frame := get_frame(mut win)
 
-        if !(com is ui.Menubar) {
-            this.x = math.min( ((win.mouse_x/10) * 10) - frame.x - (this.width/2), frame.width - this.width)
-            this.y = math.min( ((win.mouse_y/10) * 10) - frame.y - title_height - (this.height/2),
-                    frame.height - this.height - title_height)
-            
-            this.x = math.max(0, this.x)
-            this.y = math.max(0, this.y)
-        }
+		if com !is ui.Menubar {
+			this.x = math.min(((win.mouse_x / 10) * 10) - frame.x - (this.width / 2),
+				frame.width - this.width)
+			this.y = math.min(((win.mouse_y / 10) * 10) - frame.y - title_height - (this.height / 2),
+				frame.height - this.height - title_height)
+
+			this.x = math.max(0, this.x)
+			this.y = math.max(0, this.y)
+		}
 	}
 }
 

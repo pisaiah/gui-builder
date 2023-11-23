@@ -1,7 +1,7 @@
 Module {
-	name: 'GuiBuilder'
-	description: 'GUI Builder for V'
-	version: '0.1'
-	license: 'MIT'
+	name: 'guibuilder'
+	description: 'GUI builder example'
+	version: '1.0'
+	license: 'arr'
 	dependencies: []
 }
