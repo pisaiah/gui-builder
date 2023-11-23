@@ -8,7 +8,8 @@ See:
 
 A (very Work in Progress) GUI Builder for V.
 
-![image](https://github.com/pisaiah/gui-builder/assets/16439221/8e598ada-f440-4be4-83a4-8e9aa536cb34)
+![image](https://github.com/pisaiah/gui-builder/assets/16439221/35ba8eac-6c4a-4c8d-b850-c5ab7bc3cf8f)
+
 
 Currently:
 - Very Basic
