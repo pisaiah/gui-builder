@@ -1,5 +1,9 @@
 # ![Gui Builder](https://github.com/pisaiah/gui-builder/blob/master/logo.png?raw=true)
 
+See:
+- https://github.com/pisaiah/Vide
+- https://github.com/pisaiah/ui
+
 ## About
 
 A (very Work in Progress) GUI Builder for V.
